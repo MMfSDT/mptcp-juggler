@@ -418,7 +418,7 @@ static int sctp_packet_pack(struct sctp_packet *packet,
 
 	if (gso) {
 		skb_shinfo(head)->gso_type = sk->sk_gso_type;
-		NAPI_GRO_CB(head)->last = head;
+		// NAPI_GRO_CB(head)->last = head;
 	} else {
 		nskb = head;
 		pkt_size = packet->size;
@@ -499,7 +499,7 @@ merge:
 		}
 
 		if (gso) {
-			if (skb_gro_receive(&head, nskb)) {
+			if (skb_gro_merge(&head, nskb)) {
 				kfree_skb(nskb);
 				return 0;
 			}
